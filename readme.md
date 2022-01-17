@@ -12,7 +12,17 @@ Eventually this will be included in [JSON Schema Store](https://www.schemastore.
 curl -O https://raw.githubusercontent.com/pmbaumgartner/spacy-vscode-utils/main/spacy-project.json
 ```
 
-And then reference the file as is seen in the `./vscode/settings.json` file
+And then reference the file like this in the `./vscode/settings.json` file:
+
+```
+{
+    // Requires the YAML (redhat.vscode-yaml) VSCode Extension 
+    // Once this schema is in schema store, you'll change this
+    "yaml.schemas": {
+        "./spacy-project.json": "project.yml"
+    },
+}
+```
 
 ## WIP: Tasks
 
