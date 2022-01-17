@@ -4,6 +4,8 @@
     "yaml.schemas": {
         "./spacy-project.json": "project.yml"
     },
-    // You'll need this before they merge https://github.com/microsoft/vscode-python/issues/18285
+    // You'll need to use this to point to your virtual environment's interpreter
+    //  if you're using the tasks.json file
+    //  before they merge https://github.com/microsoft/vscode-python/issues/18285
     "python.defaultInterpreterPath": "/Users/peter/opt/miniconda3/envs/spacy-vscode-utils/bin/python"
 }
