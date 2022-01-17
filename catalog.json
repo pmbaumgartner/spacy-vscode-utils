@@ -1,0 +1,8 @@
+{
+    "name": "spaCy projects",
+    "description": "spaCy projects let you manage and share end-to-end spaCy workflows for different use cases and domains, and orchestrate training, packaging and serving your custom pipelines.\nhttps://spacy.io/usage/projects",
+    "fileMatch": [
+        "project.yml"
+    ],
+    "url": "https://json.schemastore.org/<schemaName>.json"
+}

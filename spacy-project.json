@@ -1,0 +1,197 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "spaCy Project",
+    "description": "spaCy projects let you manage and share end-to-end spaCy workflows for different use cases and domains, and orchestrate training, packaging and serving your custom pipelines.\nhttps://spacy.io/usage/projects",
+    "type": "object",
+    "required": [
+        "commands"
+    ],
+    "properties": {
+        "title": {
+            "title": "Title",
+            "description": "An optional project title used in --help message and auto-generated docs.",
+            "type": "string"
+        },
+        "description": {
+            "title": "Description",
+            "description": "An optional project description used in auto-generated docs.",
+            "type": "string"
+        },
+        "vars": {
+            "title": "Vars",
+            "description": "A dictionary of variables that can be referenced in paths, URLs and scripts, just like config.cfg variables. For example, ${vars.name} will use the value of the variable name. Variables need to be defined in the section vars, but can be a nested dict, so you’re able to reference ${vars.model.name}.",
+            "type": "object",
+            "uniqueItems": true
+        },
+        "env": {
+            "title": "Environment",
+            "description": "A dictionary of variables, mapped to the names of environment variables that will be read in when running the project. For example, ${env.name} will use the value of the environment variable defined as name.",
+            "type": "object"
+        },
+        "directories": {
+            "title": "Directories",
+            "description": "An optional list of directories that should be created in the project for assets, training outputs, metrics etc. spaCy will make sure that these directories always exist.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "assets": {
+            "title": "Assets",
+            "description": "A list of assets that can be fetched with the `project assets` command. `url` defines a URL or local path, `dest` is the destination file relative to the project directory, and an optional checksum ensures that an error is raised if the file’s checksum doesn’t match. Instead of url, you can also provide a `git` block with the keys `repo`, `branch` and `path`, to download from a Git repo.",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/asset"
+            }
+        },
+        "workflows": {
+            "title": "Workflows",
+            "description": "A dictionary of workflow names, mapped to a list of command names, to execute in order. Workflows can be run with the project run command.",
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "commands": {
+            "title": "Commands",
+            "description": "A list of named commands. A command can define an optional help message (shown in the CLI when the user adds --help) and the `script`, a list of commands to run. The `deps` and `outputs` let you define the created file the command depends on and produces, respectively. This lets spaCy determine whether a command needs to be re-run because its dependencies or outputs changed. Commands can be run as part of a workflow, or separately with the `project run` command.",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/command"
+            }
+        },
+        "spacy_version": {
+            "title": "spaCy Version",
+            "description": "Optional spaCy version range like >=3.0.0,<3.1.0 that the project is compatible with. If it’s loaded with an incompatible version, an error is raised when the project is loaded.",
+            "type": "string"
+        },
+        "remotes": {
+            "title": "remotes",
+            "description": "A dictionary of remote names and URL storage values",
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "type": "string"
+            }
+        }
+    },
+    "$defs": {
+        "command": {
+            "type": "object",
+            "required": [
+                "name",
+                "script"
+            ],
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "description": "Name of the command"
+                },
+                "help": {
+                    "title": "Help",
+                    "description": "Optional help message (shown in the CLI when the user adds --help)"
+                },
+                "script": {
+                    "title": "Script",
+                    "description": "A list of commands to be run",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "deps": {
+                    "title": "Dependencies",
+                    "description": "Files this command depends on.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "outputs": {
+                    "title": "Outputs",
+                    "description": "Files this command outputs.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "outputs_no_cache": {
+                    "title": "Outputs",
+                    "description": "Outputs that won’t be cached or tracked",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "no_skip": {
+                    "title": "No Skip",
+                    "description": "Always run this command, even if the dependencies haven't changed.",
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "asset": {
+            "type": [
+                "object"
+            ],
+            "required": [
+                "dest"
+            ],
+            "properties": {
+                "dest": {
+                    "title": "Destination",
+                    "description": "The destination path to save the downloaded asset to (relative to the project directory), including the file name.",
+                    "type": "string"
+                },
+                "checksum": {
+                    "title": "Checksum",
+                    "description": "Optional checksum of the file. If provided, it will be used to verify that the file matches and downloads will be skipped if a local file with the same checksum already exists.",
+                    "type": "string"
+                },
+                "url": {
+                    "title": "URL",
+                    "description": "The URL to download from, using the respective protocol.",
+                    "type": "string"
+                },
+                "git": {
+                    "$ref": "#/$defs/git_asset"
+                },
+                "description": {
+                    "title": "Description",
+                    "description": "Optional asset description, used in auto-generated docs."
+                }
+            },
+            "additionalProperties": false
+        },
+        "git_asset": {
+            "title": "Git",
+            "type": "object",
+            "required": [
+                "repo",
+                "path"
+            ],
+            "properties": {
+                "repo": {
+                    "title": "Repository",
+                    "description": "The URL of the repo to download from.",
+                    "type": "string"
+                },
+                "branch": {
+                    "title": "Branch",
+                    "description": "The branch to download from. Defaults to `master`.",
+                    "type": "string"
+                },
+                "path": {
+                    "title": "Path",
+                    "description": "Path of the file or directory to download, relative to the repo root. \"\" specifies the root directory.",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

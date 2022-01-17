@@ -1,0 +1,56 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "spaCy: info",
+            "type": "shell",
+            "command": "${config:python.defaultInterpreterPath}",
+            "args": [
+                "-m",
+                "spacy",
+                "info",
+                "${input:infoModel}",
+                "--markdown"
+            ]
+        },
+        {
+            "label": "spaCy: debug config",
+            "type": "shell",
+            "command": "${config:python.defaultInterpreterPath}",
+            "args": [
+                "-m",
+                "spacy",
+                "debug",
+                "config",
+                "${input:configPath}",
+            ],
+        },
+        // To be continued
+    ],
+    "inputs": [
+        {
+            "type": "promptString",
+            "id": "configPath",
+            "description": "Path to your config file.",
+            "default": "config.cfg"
+        },
+        {
+            "type": "promptString",
+            "id": "infoModel",
+            "description": "A trained pipeline, i.e. package name or path (optional).",
+            "default": ""
+        },
+        {
+            "type": "pickString",
+            "id": "infoModel",
+            "description": "bool",
+            "options": [
+                "true",
+                "false"
+            ],
+            "default": "true"
+        },
+    ]
+}

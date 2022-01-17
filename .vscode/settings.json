@@ -1,0 +1,9 @@
+{
+    // Requires the YAML (redhat.vscode-yaml) VSCode Extension 
+    // Once this schema is in schema store, you'll change this
+    "yaml.schemas": {
+        "./spacy-project.json": "project.yml"
+    },
+    // You'll need this before they merge https://github.com/microsoft/vscode-python/issues/18285
+    "python.defaultInterpreterPath": "/Users/peter/opt/miniconda3/envs/spacy-vscode-utils/bin/python"
+}
